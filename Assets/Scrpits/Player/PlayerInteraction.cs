@@ -1,8 +1,8 @@
-using UnityEngine;
+/*using UnityEngine;
 
 public class PlayerInteraction : MonoBehaviour
 {
-    public float interactionDistance = 3f;
+   public float interactionDistance = 3f;
 
     void Update()
     {
@@ -19,4 +19,4 @@ public class PlayerInteraction : MonoBehaviour
             }
         }
     }
-}
+}*/

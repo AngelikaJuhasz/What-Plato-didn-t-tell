@@ -1,50 +1,54 @@
-using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager Instance;
+    public static GameManager Instance; // Singleton
 
-    // Example: a dictionary to track choice values
-    private Dictionary<string, int> choices = new Dictionary<string, int>();
+    private Dictionary<string, bool> playerChoices = new Dictionary<string, bool>();
 
-    void Awake()
+    private void Awake()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
+            if (Instance == null)
+            {
+                Instance = this;
+                DontDestroyOnLoad(gameObject);
+
+                // Load all saved choices at start
+                LoadChoices();
+            }
+            else
+            {
+                Destroy(gameObject);
+            }
         }
-        else
+
+        //Load saved choices from PlayerPrefs
+        private void LoadChoices()
         {
-            Destroy(gameObject);
+            string[] keys = { "HelpedNPC" }; // Add more choice keys here if needed
+
+            foreach (string key in keys)
+            {
+                if (PlayerPrefs.HasKey(key))
+                {
+                    playerChoices[key] = PlayerPrefs.GetInt(key) == 1;
+                    Debug.Log($"Loaded choice: {key} = {playerChoices[key]}");
+                }
+            }
+
         }
+
+        public void SetChoice(string choiceKey, bool value)
+    {
+        playerChoices[choiceKey] = value;
+        Debug.Log($"Choice saved: {choiceKey} = {value}");
     }
 
-    public void RecordChoice(string choiceKey, int value)
+    public bool GetChoice(string choiceKey)
     {
-        if (choices.ContainsKey(choiceKey))
-            choices[choiceKey] += value;
-        else
-            choices[choiceKey] = value;
-    }
-
-    public int GetChoiceValue(string choiceKey)
-    {
-        return choices.ContainsKey(choiceKey) ? choices[choiceKey] : 0;
-    }
-
-    public void CheckEnding()
-    {
-        if (GetChoiceValue("morality") > 5)
-        {
-            Debug.Log("Good ending");
-            // Trigger the good ending (e.g., load a scene or show UI)
-        }
-        else
-        {
-            Debug.Log("Bad ending");
-            // Trigger the bad ending
-        }
+        bool exists = playerChoices.ContainsKey(choiceKey);
+        Debug.Log($"Checking choice: {choiceKey}, Exists: {exists}, Value: {(exists ? playerChoices[choiceKey] : false)}");
+        return exists && playerChoices[choiceKey];
     }
 }
