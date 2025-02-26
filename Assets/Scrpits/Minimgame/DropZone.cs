@@ -1,37 +1,48 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using System.Collections.Generic;
 
 public class DropZone : MonoBehaviour, IDropHandler
 {
-    public Dictionary<string, int> ingredientCount = new Dictionary<string, int>();
+    private Dictionary<string, int> ingredientCounts = new Dictionary<string, int>();
 
     public void OnDrop(PointerEventData eventData)
     {
-        GameObject droppedItem = eventData.pointerDrag;
-        if (droppedItem != null)
+        DraggableIngredient ingredient = eventData.pointerDrag.GetComponent<DraggableIngredient>();
+
+        if (ingredient != null)
         {
-            DraggableIngredient ingredient = droppedItem.GetComponent<DraggableIngredient>();
-            if (ingredient != null)
+            string ingredientName = ingredient.gameObject.name.Replace("(Clone)", "").Trim();
+
+            // Track ingredient counts
+            if (ingredientCounts.ContainsKey(ingredientName))
             {
-                droppedItem.transform.SetParent(transform); // Move to mixing area
-                droppedItem.transform.localPosition = Vector3.zero; // Center it
-                AddIngredient(droppedItem.name);
+                ingredientCounts[ingredientName]++;
             }
+            else
+            {
+                ingredientCounts[ingredientName] = 1;
+            }
+
+            Debug.Log($"Added {ingredientName}. Total: {ingredientCounts[ingredientName]}");
+
+            // Move ingredient into drop zone
+            ingredient.transform.SetParent(transform);
+            ingredient.transform.localPosition = Vector3.zero;
         }
-    }
-
-    void AddIngredient(string ingredientName)
-    {
-        if (!ingredientCount.ContainsKey(ingredientName))
-            ingredientCount[ingredientName] = 0;
-
-        ingredientCount[ingredientName]++;
-        Debug.Log(ingredientName + " added! Total: " + ingredientCount[ingredientName]);
     }
 
     public Dictionary<string, int> GetFinalIngredients()
     {
-        return ingredientCount;
+        return new Dictionary<string, int>(ingredientCounts);
+    }
+
+    public void ResetIngredients()
+    {
+        foreach (Transform child in transform)
+        {
+            Destroy(child.gameObject);
+        }
+        ingredientCounts.Clear();
     }
 }

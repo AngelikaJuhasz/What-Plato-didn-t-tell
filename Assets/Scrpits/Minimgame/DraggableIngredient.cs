@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
-using TMPro; // Required for text display
+using System.Collections.Generic;
 
 public class DraggableIngredient : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
@@ -8,31 +8,48 @@ public class DraggableIngredient : MonoBehaviour, IBeginDragHandler, IDragHandle
     private CanvasGroup canvasGroup;
     private Transform originalParent;
 
-    public int maxUses = 4; // Maximum times this ingredient can be used
-    private int remainingUses; // Tracks remaining uses
-    public TextMeshProUGUI countText; // UI text to display remaining uses
+    [SerializeField] private GameObject ingredientPrefab; // Prefab of the ingredient
+    [SerializeField] private int maxUnits = 4; // Total allowed uses
+
+    private static Dictionary<string, int> ingredientTracker = new Dictionary<string, int>();
 
     void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
         canvasGroup = GetComponent<CanvasGroup>();
         originalParent = transform.parent;
-        remainingUses = maxUses;
-        UpdateCountText();
+
+        string ingredientName = gameObject.name.Replace("(Clone)", "").Trim();
+
+        if (!ingredientTracker.ContainsKey(ingredientName))
+        {
+            ingredientTracker[ingredientName] = maxUnits;
+        }
     }
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        if (remainingUses <= 0) return; // Prevent dragging if no uses left
+        string ingredientName = gameObject.name.Replace("(Clone)", "").Trim();
+
+        if (ingredientTracker[ingredientName] <= 0)
+        {
+            Debug.Log($"No more {ingredientName} left to drag!");
+            eventData.pointerDrag = null; // Prevents dragging
+            return;
+        }
 
         canvasGroup.blocksRaycasts = false;
         canvasGroup.alpha = 0.7f;
-        transform.SetParent(transform.root);
+
+        //  **Instantly create a new ingredient BEFORE moving**
+        if (ingredientTracker[ingredientName] > 1)
+        {
+            SpawnNewIngredient();
+        }
     }
 
     public void OnDrag(PointerEventData eventData)
     {
-        if (remainingUses <= 0) return; // Don't allow movement if out of uses
         rectTransform.anchoredPosition += eventData.delta / transform.lossyScale.x;
     }
 
@@ -41,39 +58,37 @@ public class DraggableIngredient : MonoBehaviour, IBeginDragHandler, IDragHandle
         canvasGroup.blocksRaycasts = true;
         canvasGroup.alpha = 1f;
 
-        if (transform.parent == transform.root)
+        string ingredientName = gameObject.name.Replace("(Clone)", "").Trim();
+
+        if (transform.parent == originalParent)
         {
-            transform.SetParent(originalParent);
+            rectTransform.anchoredPosition = Vector2.zero; // Reset position if not placed
         }
         else
         {
-            UseIngredient(); // Reduce count if successfully dropped
+            ingredientTracker[ingredientName]--;
+            Debug.Log($"{ingredientName} remaining: {ingredientTracker[ingredientName]}");
+
+            if (ingredientTracker[ingredientName] == 0)
+            {
+                Debug.Log($"{ingredientName} is now fully used up!");
+            }
         }
     }
 
-    private void UseIngredient()
+    private void SpawnNewIngredient()
     {
-        remainingUses--;
-        UpdateCountText();
+        GameObject newIngredient = Instantiate(ingredientPrefab, originalParent);
+        newIngredient.transform.SetSiblingIndex(transform.GetSiblingIndex()); // Keep correct order
 
-        if (remainingUses <= 0)
+        // Reset alpha & enable raycasts to prevent the issue
+        CanvasGroup newCanvasGroup = newIngredient.GetComponent<CanvasGroup>();
+        if (newCanvasGroup != null)
         {
-            gameObject.SetActive(false); // Hide the ingredient if no uses left
+            newCanvasGroup.alpha = 1f;
+            newCanvasGroup.blocksRaycasts = true; //  This is the real fix!
         }
     }
 
-    private void UpdateCountText()
-    {
-        if (countText != null)
-        {
-            countText.text = remainingUses.ToString();
-        }
-    }
 
-    public void ResetIngredient()
-    {
-        remainingUses = maxUses;
-        UpdateCountText();
-        gameObject.SetActive(true);
-    }
 }
