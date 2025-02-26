@@ -6,6 +6,8 @@ public class Interactable : MonoBehaviour
     private bool isPlayerNear = false;
     public List<string> dialogueLines;
     public bool hasChoices = false;
+    public Sprite npcPortraitSprite; // Unique portrait for each NPC
+
 
     void OnTriggerEnter2D(Collider2D other)
     {
@@ -28,18 +30,26 @@ public class Interactable : MonoBehaviour
     {
         if (isPlayerNear && Input.GetKeyDown(KeyCode.E))
         {
-            if (hasChoices)
+            DialogueManager dm = Object.FindAnyObjectByType<DialogueManager>();
+            if (dm != null)
             {
-                Dictionary<string, System.Action> choices = new Dictionary<string, System.Action>
+                if (hasChoices)
                 {
-                    { "Accept Quest", () => Debug.Log("Quest Accepted!") },
-                    { "Decline", () => Debug.Log("Maybe next time.") }
-                };
-                Object.FindAnyObjectByType<DialogueManager>().StartDialogue(dialogueLines, choices);
+                    Dictionary<string, System.Action> choices = new Dictionary<string, System.Action>
+                    {
+                        { "Accept Quest", () => Debug.Log("Quest Accepted!") },
+                        { "Decline", () => Debug.Log("Maybe next time.") }
+                    };
+                    dm.StartDialogue(dialogueLines, npcPortraitSprite, choices);
+                }
+                else
+                {
+                    dm.StartDialogue(dialogueLines, npcPortraitSprite);
+                }
             }
             else
             {
-                Object.FindAnyObjectByType<DialogueManager>().StartDialogue(dialogueLines);
+                Debug.LogError("DialogueManager not found!");
             }
         }
     }

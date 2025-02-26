@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
 using UnityEngine.UI;
+using TMPro;
 
 public class DialogueManager : MonoBehaviour
 {
+    public static DialogueManager instance; // optional singleton if desired
+
     public GameObject dialoguePanel;
     public TextMeshProUGUI dialogueText;
     public Button nextButton;
@@ -16,6 +18,18 @@ public class DialogueManager : MonoBehaviour
     private Queue<string> sentences;
     private Dictionary<string, System.Action> choices; // Stores choices & their actions
 
+    public Image playerPortrait;
+    public Image npcPortrait;
+    public Sprite defaultPlayerSprite;  // Default player's portrait
+
+    void Awake()
+    {
+        if (instance == null)
+            instance = this;
+        else
+            Destroy(gameObject);
+    }
+
     void Start()
     {
         sentences = new Queue<string>();
@@ -25,24 +39,42 @@ public class DialogueManager : MonoBehaviour
         nextButton.onClick.AddListener(DisplayNextSentence);
     }
 
-    public void StartDialogue(List<string> dialogueLines, Dictionary<string, System.Action> dialogueChoices = null)
+    // Overload: Uses default player's portrait automatically.
+    public void StartDialogue(List<string> dialogueLines, Sprite npcPortraitSprite, Dictionary<string, System.Action> dialogueChoices = null)
+    {
+        StartDialogue(dialogueLines, npcPortraitSprite, defaultPlayerSprite, dialogueChoices);
+    }
+
+    // Main StartDialogue: requires both NPC and player portrait sprites.
+    public void StartDialogue(List<string> dialogueLines, Sprite npcPortraitSprite, Sprite playerPortraitSprite, Dictionary<string, System.Action> dialogueChoices = null)
     {
         dialoguePanel.SetActive(true);
         sentences.Clear();
         choices.Clear();
-        choicesContainer.SetActive(false);
+        ClearChoices();
 
+        // Set the portraits
+        if (playerPortrait != null)
+        {
+            playerPortrait.sprite = playerPortraitSprite;
+            playerPortrait.enabled = false; // Hide by default (shown when player speaks)
+        }
+        if (npcPortrait != null)
+        {
+            npcPortrait.sprite = npcPortraitSprite;
+            npcPortrait.enabled = true; // NPC portrait is visible by default
+        }
+
+        // Enqueue each dialogue line.
         foreach (string sentence in dialogueLines)
         {
             sentences.Enqueue(sentence);
         }
 
+        // If there are choices, store them.
         if (dialogueChoices != null)
         {
-            foreach (var choice in dialogueChoices)
-            {
-                choices[choice.Key] = choice.Value;
-            }
+            choices = new Dictionary<string, System.Action>(dialogueChoices);
         }
 
         DisplayNextSentence();
@@ -63,9 +95,22 @@ public class DialogueManager : MonoBehaviour
 
         string sentence = sentences.Dequeue();
         dialogueText.text = sentence;
+
+        // Decide which portrait to show based on markers in the sentence.
+        // Example: sentences starting with "[NPC]" show NPC portrait; "[Player]" shows player portrait.
+        if (sentence.StartsWith("[NPC]"))
+        {
+            npcPortrait.enabled = true;
+            playerPortrait.enabled = false;
+        }
+        else if (sentence.StartsWith("[Player]"))
+        {
+            playerPortrait.enabled = true;
+            npcPortrait.enabled = false;
+        }
     }
 
-    void ShowChoices()
+    private void ShowChoices()
     {
         nextButton.gameObject.SetActive(false);
         choicesContainer.SetActive(true);
@@ -74,27 +119,38 @@ public class DialogueManager : MonoBehaviour
         {
             Button choiceButton = Instantiate(choiceButtonPrefab, choicesContainer.transform);
             choiceButton.gameObject.SetActive(true);
-            choiceButton.GetComponentInChildren<TextMeshProUGUI>().text = choice.Key;
 
+            TextMeshProUGUI choiceText = choiceButton.GetComponentInChildren<TextMeshProUGUI>();
+            if (choiceText != null)
+            {
+                choiceText.text = choice.Key;
+            }
+            else
+            {
+                Debug.LogError("Choice button is missing a TextMeshProUGUI component.");
+            }
+
+            choiceButton.onClick.RemoveAllListeners();
             choiceButton.onClick.AddListener(() =>
             {
-                choice.Value.Invoke(); // Execute the function tied to the choice
+                choice.Value.Invoke(); // Execute the action for this choice.
                 ClearChoices();
                 EndDialogue();
             });
         }
     }
 
-    void ClearChoices()
+    private void ClearChoices()
     {
         foreach (Transform child in choicesContainer.transform)
         {
             Destroy(child.gameObject);
         }
         choices.Clear();
+        choicesContainer.SetActive(false);
     }
 
-    void EndDialogue()
+    private void EndDialogue()
     {
         dialoguePanel.SetActive(false);
         nextButton.gameObject.SetActive(true);
