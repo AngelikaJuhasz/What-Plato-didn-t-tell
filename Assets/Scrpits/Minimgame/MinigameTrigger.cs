@@ -1,13 +1,36 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class MinigameTrigger : MonoBehaviour
 {
-    public string minigameSceneName;
+    private bool playerInRange = false;
 
-    public void StartMinigame()
+    void Update()
     {
-        SceneManager.LoadScene(minigameSceneName, LoadSceneMode.Additive);
+        if (playerInRange && Input.GetKeyDown(KeyCode.E))
+        {
+            StartMinigame();
+        }
+    }
+
+    void StartMinigame()
+    {
+        Debug.Log("Minigame started! Implement logic here.");
+        // Placeholder for real minigame logic
+    }
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            playerInRange = true;
+        }
+    }
+
+    void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            playerInRange = false;
+        }
     }
 }
-
