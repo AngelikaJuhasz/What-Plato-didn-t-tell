@@ -37,8 +37,8 @@ public class Interactable : MonoBehaviour
                 {
                     Dictionary<string, System.Action> choices = new Dictionary<string, System.Action>
                     {
-                        { "Accept Quest", () => Debug.Log("Quest Accepted!") },
-                        { "Decline", () => Debug.Log("Maybe next time.") }
+                        { "Choice 1", () => Debug.Log("You chose correctly!") },
+                        { "Choice 2", () => Debug.Log("Thats not quite right...") }
                     };
                     dm.StartDialogue(dialogueLines, npcPortraitSprite, choices);
                 }

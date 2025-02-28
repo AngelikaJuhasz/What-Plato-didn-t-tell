@@ -136,7 +136,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ingredientPrefab: {fileID: 5529620905306951974}
-  maxUnits: 3
+  maxUnits: 6
   ingredientCounter: {fileID: 1981934593827880740, guid: badc9203587982a4b999d2e8e3da86dc, type: 3}
 --- !u!225 &3599614100964159208
 CanvasGroup:
