@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using TMPro;
-
+using UnityEngine.SceneManagement;
 
 public class WineMixer : MonoBehaviour
 {
@@ -16,11 +16,11 @@ public class WineMixer : MonoBehaviour
 
     public void MixWine()
     {
-        Debug.Log(" Mixing ingredients...");
+        Debug.Log("Mixing ingredients...");
 
         if (dropZone == null)
         {
-            Debug.LogError(" dropZone is not assigned!");
+            Debug.LogError("dropZone is not assigned!");
             return;
         }
 
@@ -28,18 +28,17 @@ public class WineMixer : MonoBehaviour
 
         if (ingredients == null || ingredients.Count == 0)
         {
-            Debug.LogWarning(" No ingredients were added! Try adding ingredients before mixing.");
+            Debug.LogWarning("No ingredients were added! Try adding ingredients before mixing.");
             return;
         }
 
         foreach (var ingredient in ingredients)
         {
-            Debug.Log($" Ingredient: {ingredient.Key}, Amount: {ingredient.Value}");
+            Debug.Log($"Ingredient: {ingredient.Key}, Amount: {ingredient.Value}");
         }
 
         string result = CheckWineQuality(ingredients);
-        Debug.Log($" Wine Quality: {result}");
-
+        Debug.Log($"Wine Quality: {result}");
 
         // Show result in UI
         if (resultText != null)
@@ -49,20 +48,27 @@ public class WineMixer : MonoBehaviour
         }
         else
         {
-            Debug.LogError(" resultText is not assigned in the Inspector!");
+            Debug.LogError("resultText is not assigned in the Inspector!");
         }
-    }
 
+        // Determine success and report to GameProgressTracker
+        bool success = (result == "Perfect Wine! ");
+        int points = success ? 1 : 0;
+        GameProgressTracker.Instance.AddScore(points);
+
+        // Load back to the main scene after a short delay
+        Invoke("ReturnToMainScene", 2.0f);
+    }
 
     string CheckWineQuality(Dictionary<string, int> ingredients)
     {
-        int grapes = ingredients.ContainsKey("Grapes") ? ingredients["Grapes"] : 0;
+        int grape = ingredients.ContainsKey("Grape") ? ingredients["Grape"] : 0;
         int yeast = ingredients.ContainsKey("Yeast") ? ingredients["Yeast"] : 0;
         int honey = ingredients.ContainsKey("Honey") ? ingredients["Honey"] : 0;
         int water = ingredients.ContainsKey("Water") ? ingredients["Water"] : 0;
         int herbs = ingredients.ContainsKey("Herbs") ? ingredients["Herbs"] : 0;
 
-        if (grapes == 3 && yeast == 2 && honey == 1 && water == 1 && herbs == 1)
+        if (grape == 3 && yeast == 2 && honey == 1 && water == 1 && herbs == 1)
         {
             return "Perfect Wine! ";
         }
@@ -83,4 +89,10 @@ public class WineMixer : MonoBehaviour
             return "The wine is unbalanced. Try again! ";
         }
     }
+
+    void ReturnToMainScene()
+    {
+       // SceneLoader.Instance.LoadScene("MainScene"); // Go back to the main scene
+    }
 }
+
