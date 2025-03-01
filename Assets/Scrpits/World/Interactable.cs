@@ -8,8 +8,18 @@ public class Interactable : MonoBehaviour
     public bool hasChoices = false;
     public Sprite npcPortraitSprite; // Unique portrait for each NPC
 
+    [SerializeField] private string sceneToLoad; // Set this in Unity for each object
 
-    void OnTriggerEnter2D(Collider2D other)
+    public void Interact()
+    {
+        if (!string.IsNullOrEmpty(sceneToLoad))
+        {
+            FindAnyObjectByType<SceneTransitionManager>().LoadScene(sceneToLoad);
+        }
+    }
+
+
+void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Player"))
         {

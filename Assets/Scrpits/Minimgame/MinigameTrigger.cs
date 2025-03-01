@@ -1,21 +1,34 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MinigameTrigger : MonoBehaviour
 {
+    public string minigameSceneName; // Name of the minigame scene to load
     private bool playerInRange = false;
+    public bool useSceneTransitionManager = true; // Toggle to use our SceneTransitionManager if available
 
     void Update()
     {
         if (playerInRange && Input.GetKeyDown(KeyCode.E))
         {
-            StartMinigame();
+            if (useSceneTransitionManager)
+            {
+                SceneTransitionManager stm = FindAnyObjectByType<SceneTransitionManager>();
+                if (stm != null)
+                {
+                    stm.LoadScene(minigameSceneName);
+                }
+                else
+                {
+                    Debug.LogWarning("SceneTransitionManager not found! Loading scene directly.");
+                    SceneManager.LoadScene(minigameSceneName, LoadSceneMode.Single);
+                }
+            }
+            else
+            {
+                SceneManager.LoadScene(minigameSceneName, LoadSceneMode.Single);
+            }
         }
-    }
-
-    void StartMinigame()
-    {
-        Debug.Log("Minigame started! Implement logic here.");
-        // Placeholder for real minigame logic
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -23,6 +36,7 @@ public class MinigameTrigger : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             playerInRange = true;
+            Debug.Log("Press E to start the minigame.");
         }
     }
 

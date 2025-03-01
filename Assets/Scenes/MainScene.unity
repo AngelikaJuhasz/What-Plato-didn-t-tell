@@ -1087,6 +1087,7 @@ GameObject:
   - component: {fileID: 511228332}
   - component: {fileID: 511228331}
   - component: {fileID: 511228333}
+  - component: {fileID: 511228334}
   m_Layer: 0
   m_Name: Minigame_1
   m_TagString: Untagged
@@ -1149,7 +1150,7 @@ Transform:
   m_GameObject: {fileID: 511228330}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.16082525, y: 3.53, z: -0.016941192}
+  m_LocalPosition: {x: 3.34, y: 3.4, z: -0.016941192}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1168,6 +1169,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e24b9acc9ee35364fa1faf213905f681, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  minigameSceneName: WineMinigame
+  useSceneTransitionManager: 1
+--- !u!114 &511228334
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 511228330}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c156713165987ea4ca41e570861ada86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dialogueLines: []
+  hasChoices: 0
+  npcPortraitSprite: {fileID: 0}
+  sceneToLoad: WineMinigame
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -2173,7 +2192,7 @@ Transform:
   m_GameObject: {fileID: 764431796}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.9, y: 0.41, z: 0.016941192}
+  m_LocalPosition: {x: 0.03, y: 0.47, z: 0.016941192}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2942,6 +2961,7 @@ MonoBehaviour:
   - Line 2
   hasChoices: 0
   npcPortraitSprite: {fileID: 0}
+  sceneToLoad: 
 --- !u!61 &1143875491
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -3094,6 +3114,7 @@ MonoBehaviour:
   - Line 2
   hasChoices: 1
   npcPortraitSprite: {fileID: 0}
+  sceneToLoad: 
 --- !u!61 &1203652433
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -3886,6 +3907,50 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1333049874}
   m_CullTransparentMesh: 1
+--- !u!1 &1364466978
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1364466979}
+  - component: {fileID: 1364466980}
+  m_Layer: 0
+  m_Name: SceneManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1364466979
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1364466978}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 764.37085, y: 668.3315, z: 3.034773}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1364466980
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1364466978}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7bc5d50cffb83b84292180ad6aa3e974, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1371284581
 GameObject:
   m_ObjectHideFlags: 0
@@ -4319,7 +4384,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1762396034
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5021,6 +5086,52 @@ MonoBehaviour:
   - Line 2
   hasChoices: 1
   npcPortraitSprite: {fileID: 0}
+  sceneToLoad: 
+--- !u!1 &1974675316
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1974675318}
+  - component: {fileID: 1974675317}
+  m_Layer: 0
+  m_Name: StartPanelManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1974675317
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1974675316}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca9fd9c44fc06e74d907c73dedd1a7a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startUIPanel: {fileID: 1762396033}
+--- !u!4 &1974675318
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1974675316}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 960, y: 540, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1986448508
 GameObject:
   m_ObjectHideFlags: 0
@@ -5257,6 +5368,7 @@ GameObject:
   - component: {fileID: 2022975745}
   - component: {fileID: 2022975746}
   - component: {fileID: 2022975747}
+  - component: {fileID: 2022975748}
   m_Layer: 0
   m_Name: Minigame_2
   m_TagString: Untagged
@@ -5338,6 +5450,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e24b9acc9ee35364fa1faf213905f681, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  minigameSceneName: DoorMinigame
+  useSceneTransitionManager: 1
+--- !u!114 &2022975748
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2022975744}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c156713165987ea4ca41e570861ada86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dialogueLines: []
+  hasChoices: 0
+  npcPortraitSprite: {fileID: 0}
+  sceneToLoad: DoorMinigame
 --- !u!1 &2026864780
 GameObject:
   m_ObjectHideFlags: 0
@@ -5844,3 +5974,5 @@ SceneRoots:
   - {fileID: 1661574341}
   - {fileID: 263096897}
   - {fileID: 915732815}
+  - {fileID: 1364466979}
+  - {fileID: 1974675318}
