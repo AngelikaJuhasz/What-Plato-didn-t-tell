@@ -2,7 +2,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 
-public class PriestessDialogue : MonoBehaviour
+public class PriestessDialogueManager : MonoBehaviour
 {
     [SerializeField] private GameObject dialoguePanel; // The UI panel holding the text
     [SerializeField] private TextMeshProUGUI dialogueText; // The text UI element
