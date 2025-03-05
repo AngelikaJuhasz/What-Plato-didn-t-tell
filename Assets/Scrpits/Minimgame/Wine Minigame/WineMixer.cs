@@ -54,7 +54,7 @@ public class WineMixer : MonoBehaviour
         // Determine success and report to GameProgressTracker
         bool success = (result == "Perfect Wine! ");
         int points = success ? 1 : 0;
-        GameProgressTracker.Instance.AddScore(points);
+        GameProgressTracker.Instance.IncreaseCorrect();
 
         // Load back to the main scene after a short delay
         Invoke("ReturnToMainScene", 2.0f);

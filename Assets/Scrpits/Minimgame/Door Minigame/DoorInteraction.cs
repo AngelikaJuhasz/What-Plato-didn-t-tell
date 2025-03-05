@@ -21,15 +21,15 @@ public class DoorInteraction : MonoBehaviour
         {
             resultText.text = "You chose wisely! Socrates gains wisdom.";
             resultText.color = Color.green;
-            GameProgressTracker.Instance.AddScore(1); // Award 1 point for the correct choice
+            GameProgressTracker.Instance.IncreaseCorrect();
         }
         else
         {
             resultText.text = "Wrong choice! Socrates loses credibility.";
             resultText.color = Color.red;
-            GameProgressTracker.Instance.AddScore(0); // Register failure (doesn't increase score)
-        }
+            GameProgressTracker.Instance.IncreaseIncorrect();
 
-        resultText.gameObject.SetActive(true); // Show result message
+            resultText.gameObject.SetActive(true); // Show result message
+        }
     }
 }

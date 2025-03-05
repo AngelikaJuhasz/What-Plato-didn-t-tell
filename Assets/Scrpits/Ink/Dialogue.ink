@@ -1,6 +1,15 @@
-﻿VAR credibility = 0
+﻿VAR correct = 0
+VAR incorrect = 0
+VAR humorous = 0
 
 -> Start 
+
+ === function lower(ref x)
+ 	~ x = x - 1
+
+ === function raise(ref x)
+ 	~ x = x + 1
+
 
 === Start ===
 Merchant: "Socrates! Behold the Ring of Gyges! With this, you can become invisible—free to act as you wish, unseen and unjudged. What would you do?"
@@ -34,13 +43,17 @@ Merchant: "...Are you telling me that with unlimited power, your first thought i
 
 
 === Outcome1 ===
-Merchant nods approvingly and gifts Socrates the Ring of Gyges.
+Merchant nods approvingly and gifts Socrates the Ring of Gyges. 
+~ raise (correct)
 -> END
+
 
 === Outcome2 ===
 Merchant keeps the ring, skeptical of Socrates’ view. Socrates loses reputation.
+~ raise (incorrect)
 -> END
 
 === Outcome3 ===
 Merchant sighs at Socrates’ humor. No item gained, but merchants in the city now share stories of his humor.
+~ raise (humorous)
 -> END

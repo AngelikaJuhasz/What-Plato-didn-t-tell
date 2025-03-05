@@ -3,7 +3,12 @@ using UnityEngine;
 public class GameProgressTracker : MonoBehaviour
 {
     public static GameProgressTracker Instance { get; private set; }
-    private int score = 0; // Tracks total points
+
+
+    // Tracks Correct, Incorrect, and Humorous choices
+    private int correctCount = 0;
+    private int incorrectCount = 0;
+    private int humorousCount = 0;
 
     private void Awake()
     {
@@ -18,14 +23,37 @@ public class GameProgressTracker : MonoBehaviour
         }
     }
 
-    public void AddScore(int points)
+
+    // Methods for Correct, Incorrect, and Humorous choices
+
+    public int GetCorrect() => correctCount;
+    public void IncreaseCorrect()
     {
-        score += points;
-        Debug.Log($"Current Score: {score}");
+        correctCount++;
     }
 
-    public int GetScore()
+    public int GetIncorrect() => incorrectCount;
+    public void IncreaseIncorrect()
     {
-        return score;
+        incorrectCount++;
     }
+
+    public int GetHumorous() => humorousCount;
+    public void IncreaseHumorous()
+    {
+        humorousCount++;
+    }
+
+    // Optionally, reset all values (useful for restarting or starting new game)
+    public void ResetAllValues()
+    {
+        correctCount = 0;
+        incorrectCount = 0;
+        humorousCount = 0;
+    }
+
+    // You can also provide setters if you want to set specific values externally
+    public void SetCorrect(int value) => correctCount = value;
+    public void SetIncorrect(int value) => incorrectCount = value;
+    public void SetHumorous(int value) => humorousCount = value;
 }
