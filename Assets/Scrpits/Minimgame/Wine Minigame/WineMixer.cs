@@ -8,6 +8,15 @@ public class WineMixer : MonoBehaviour
 {
     public DropZone dropZone;
     public TextMeshProUGUI resultText;
+    public Image mixingPotImage;
+    public GameObject resultsCanvas; // Assign this in the Inspector
+
+    [Header("Wine Sprites")]
+    public Sprite emptyPotSprite;
+    public Sprite perfectWineSprite;
+    public Sprite weakWineSprite;
+    public Sprite strongWineSprite;
+    public Sprite unbalancedWineSprite;
 
     void Start()
     {
@@ -45,6 +54,7 @@ public class WineMixer : MonoBehaviour
         {
             resultText.text = result;
             resultText.gameObject.SetActive(true); // Show the result text
+            resultsCanvas.SetActive(true); // Ensure this is assigned in the Inspector
         }
         else
         {
@@ -70,24 +80,31 @@ public class WineMixer : MonoBehaviour
 
         if (grape == 3 && yeast == 2 && honey == 1 && water == 1 && herbs == 1)
         {
+
             return "Perfect Wine! ";
+            
         }
         else if (water >= 3)
         {
+
             return "The wine is too weak. ";
         }
         else if (water == 0 && yeast >= 3)
         {
+
             return "The wine is too strong! ";
         }
         else if (yeast >= 3 || herbs >= 3)
         {
+
             return "The wine is overly fermented and tastes strange. ";
         }
         else
         {
+
             return "The wine is unbalanced. Try again! ";
         }
+
     }
 
     void ReturnToMainScene()

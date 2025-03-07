@@ -54,11 +54,7 @@ public class DoorInteraction : MonoBehaviour
             gameEndCanvas.SetActive(true); // Show the end game canvas
         }
 
-        if (feedbackText != null)
-        {
-            feedbackText.SetActive(true);
-            feedbackText.GetComponent<TMPro.TextMeshProUGUI>().text = won ? "You picked the right door!" : "Wrong door, try again!";
-        }
+       
 
         Debug.Log("Game Over!");
     }

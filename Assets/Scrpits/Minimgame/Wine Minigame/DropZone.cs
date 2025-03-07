@@ -26,9 +26,8 @@ public class DropZone : MonoBehaviour, IDropHandler
 
             Debug.Log($"Added {ingredientName}. Total: {ingredientCounts[ingredientName]}");
 
-            // Move ingredient into drop zone
-            ingredient.transform.SetParent(transform);
-            ingredient.transform.localPosition = Vector3.zero;
+            // Destroy the ingredient after registering it
+            Destroy(ingredient.gameObject);
         }
     }
 
