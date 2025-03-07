@@ -10,7 +10,7 @@ public class PriestessDialogueManager : MonoBehaviour
 
     private string[] priestessStatements =
     {
-        "You must choose wisely, traveler. One of us speaks the truth, the others deceive.\n",  // First message at scene start
+        "One of us speaks the truth, the others deceive.\n",  // First message at scene start
         "Priest A: 'Priest B always speaks the truth.'\n",
         "Priest B: 'The correct door is the one on the left.'\n",
         "Priest C: 'Priest A is lying.'"
