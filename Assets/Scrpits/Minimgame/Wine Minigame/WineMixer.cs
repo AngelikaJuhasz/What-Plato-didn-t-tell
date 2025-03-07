@@ -64,10 +64,19 @@ public class WineMixer : MonoBehaviour
         // Determine success and report to GameProgressTracker
         bool success = (result == "Perfect Wine! ");
         int points = success ? 1 : 0;
-        GameProgressTracker.Instance.IncreaseCorrect();
+        if(!success)
+{
+            GameProgressTracker.Instance.IncreaseIncorrect();
+        }
+        else
+        {
+            // Increase the correct count if it's "Perfect Wine!"
+            GameProgressTracker.Instance.IncreaseCorrect();
+        }
 
         // Load back to the main scene after a short delay
         Invoke("ReturnToMainScene", 2.0f);
+      
     }
 
     string CheckWineQuality(Dictionary<string, int> ingredients)
@@ -80,13 +89,13 @@ public class WineMixer : MonoBehaviour
 
         if (grape == 3 && yeast == 2 && honey == 1 && water == 1 && herbs == 1)
         {
-
+           
             return "Perfect Wine! ";
             
         }
         else if (water >= 3)
         {
-
+ 
             return "The wine is too weak. ";
         }
         else if (water == 0 && yeast >= 3)

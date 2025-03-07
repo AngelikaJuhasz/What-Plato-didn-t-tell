@@ -11,6 +11,7 @@ public class Interactable : MonoBehaviour
 
     [Header("Scene Transition")]
     [SerializeField] private string sceneToLoad; // Scene to load
+    private bool isCompleted = false; // Ensures we only count it once
 
     void Update()
     {
@@ -22,6 +23,7 @@ public class Interactable : MonoBehaviour
 
     void Interact()
     {
+        if (isCompleted) return; // Prevents counting the same interaction multiple times
         if (!string.IsNullOrEmpty(sceneToLoad))
         {
             FindAnyObjectByType<SceneTransitionManager>().LoadScene(sceneToLoad);
@@ -29,7 +31,7 @@ public class Interactable : MonoBehaviour
         else if (inkDialogueFile != null)
         {
             InkDialogueManager.Instance.StartDialogue(inkDialogueFile);
-            InkDialogueManager.Instance.SetNPCPortrait(npcPortraitSprite); // Handles portrait separately
+
         }
     }
 
@@ -40,6 +42,8 @@ public class Interactable : MonoBehaviour
             isPlayerNear = true;
             Debug.Log("Press E to interact");
         }
+
+       
     }
 
     void OnTriggerExit2D(Collider2D other)

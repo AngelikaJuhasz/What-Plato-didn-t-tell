@@ -26,6 +26,8 @@ public class InkDialogueManager : MonoBehaviour
         HideDialogue(); // Ensure it's hidden on start
     }
 
+
+
     public void StartDialogue(TextAsset inkFile)
     {
         inkJSON = inkFile;
@@ -53,6 +55,7 @@ public class InkDialogueManager : MonoBehaviour
 
         ShowDialogue();
         RefreshDialogue();
+
     }
 
     void RefreshDialogue()
@@ -116,6 +119,7 @@ public class InkDialogueManager : MonoBehaviour
             }
 
             HideDialogue(); // Hide when dialogue ends
+                          
         }
     }
 
@@ -140,7 +144,7 @@ public class InkDialogueManager : MonoBehaviour
         }
     }
 
-    void Choose(int choiceIndex)
+    void Choose(int choiceIndex, System.Action onComplete = null)
     {
         story.ChooseChoiceIndex(choiceIndex);
         RefreshDialogue();

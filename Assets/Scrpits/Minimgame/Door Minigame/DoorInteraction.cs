@@ -48,6 +48,7 @@ public class DoorInteraction : MonoBehaviour
     void EndGame(bool won)
     {
         gameEnded = true;
+       
 
         if (gameEndCanvas != null)
         {
