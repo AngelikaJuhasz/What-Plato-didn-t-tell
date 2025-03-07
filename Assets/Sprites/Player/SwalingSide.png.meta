@@ -322,7 +322,15 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      SwalingSide_0: -4142764006819579904
+      SwalingSide_1: -571662913365908045
+      SwalingSide_2: -1116738906513580086
+      SwalingSide_3: -4353328062077559888
+      SwalingSide_4: -5050488666053422849
+      SwalingSide_5: -7915086144577988223
+      SwalingSide_6: -7605429966740883406
+      SwalingSide_7: -2203313229440381093
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
